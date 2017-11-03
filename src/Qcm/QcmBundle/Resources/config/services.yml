@@ -1,0 +1,14 @@
+parameters:
+#    qcm.example.class: Qcm\QcmBundle\Example
+
+services:
+#    qcm.example:
+#        class: %qcm.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    redirect.after.login:
+        class: Utilisateurs\UtilisateursBundle\Redirection\AfterLoginRedirection
+        arguments: [@router]
+
+    redirect.after.logout:
+        class: Utilisateurs\UtilisateursBundle\Redirection\AfterLogoutRedirection
+        arguments: [@router, @security.context]

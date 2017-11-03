@@ -1,0 +1,7 @@
+Qcm\QcmBundle\Entity\Categories:
+    exclusion_policy: ALL
+    properties :
+        id:
+            expose : true
+        nomCategorie:
+            expose : true

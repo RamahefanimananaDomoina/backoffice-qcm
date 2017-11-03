@@ -1,0 +1,120 @@
+<?php
+
+namespace Qcm\QcmBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ReponseExacte
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Qcm\QcmBundle\Entity\ReponseExacteRepository")
+ */
+class ReponseExacte
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+
+    /**
+    * @ORM\OneToOne(targetEntity="Qcm\QcmBundle\Entity\Question")
+    */
+    private $question;
+    
+    /**
+    * @ORM\OneToOne(targetEntity="Qcm\QcmBundle\Entity\Reponse")
+    */
+    private $reponse;
+    
+    /**
+     *@ORM\ManyToOne(targetEntity="Qcm\QcmBundle\Entity\Categories", cascade={"persist", "remove"})
+     *@ORM\JoinColumn(nullable=false) 
+     */
+    
+    private $Categorie;
+    
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \Qcm\QcmBundle\Entity\Question $question
+     * @return ReponseExacte
+     */
+    public function setQuestion(\Qcm\QcmBundle\Entity\Question $question = null)
+    {
+        $this->question = $question;
+    
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \Qcm\QcmBundle\Entity\Question 
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+
+    /**
+     * Set reponse
+     *
+     * @param \Qcm\QcmBundle\Entity\Reponse $reponse
+     * @return ReponseExacte
+     */
+    public function setReponse(\Qcm\QcmBundle\Entity\Reponse $reponse = null)
+    {
+        $this->reponse = $reponse;
+    
+        return $this;
+    }
+
+    /**
+     * Get reponse
+     *
+     * @return \Qcm\QcmBundle\Entity\Reponse 
+     */
+    public function getReponse()
+    {
+        return $this->reponse;
+    }
+
+    /**
+     * Set Categorie
+     *
+     * @param \Qcm\QcmBundle\Entity\Categories $categorie
+     * @return ReponseExacte
+     */
+    public function setCategorie(\Qcm\QcmBundle\Entity\Categories $categorie)
+    {
+        $this->Categorie = $categorie;
+    
+        return $this;
+    }
+
+    /**
+     * Get Categorie
+     *
+     * @return \Qcm\QcmBundle\Entity\Categories 
+     */
+    public function getCategorie()
+    {
+        return $this->Categorie;
+    }
+}

@@ -1,0 +1,14 @@
+Qcm\QcmBundle\Entity\Reponse:
+    exclusion_policy: ALL
+    properties :
+        id:
+            expose : true
+        contenuReponse:
+            expose : true
+        question:
+            properties:
+                id:
+                    expose: true
+                contenuQuestion:
+                    expose: true
+            expose: true

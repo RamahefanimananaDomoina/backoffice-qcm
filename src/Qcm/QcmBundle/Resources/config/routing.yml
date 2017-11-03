@@ -1,0 +1,33 @@
+qcm_homepage:
+    pattern:  /accueil
+    defaults: { _controller: QcmBundle:Default:index }
+
+QcmBundle_question:
+    resource: "@QcmBundle/Resources/config/routing/question.yml"
+    prefix:   /admin/question
+
+QcmBundle_reponse:
+    resource: "@QcmBundle/Resources/config/routing/reponse.yml"
+    prefix:   /admin/reponse
+
+QcmBundle_reponseexacte:
+    resource: "@QcmBundle/Resources/config/routing/reponseexacte.yml"
+    prefix:   /admin/dashboard
+
+qcm_getresponse:
+    pattern:  /reponse
+    defaults: { _controller: QcmBundle:Default:reponse }
+
+qcm_jsrouting:
+    pattern:  /route
+    defaults: { _controller: QcmBundle:Ajax:index }
+    options:
+        expose: true
+
+qcm_webservice:
+    pattern:  /questionParCategorie/{idCategorie}
+    defaults: { _controller: QcmBundle:Default:WebService, _format: json, _locale: en }
+    requirements:
+      _method:  GET
+      _format: JSON
+    

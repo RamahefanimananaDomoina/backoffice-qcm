@@ -1,0 +1,9 @@
+Qcm\QcmBundle\Entity\Question:
+    exclusion_policy: ALL
+    properties :
+        id:
+            expose : true
+        contenuQuestion:
+            expose : true
+        categorie:
+            expose : true 

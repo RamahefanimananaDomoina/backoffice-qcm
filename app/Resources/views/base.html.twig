@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+    {% block head %}{% endblock head%}  
+    <title>{% block title %}QCM{% endblock %}</title>
+
+    <link rel="stylesheet"  href="{{ asset('bootstrap/css/bootstrap.min.css')}}" />
+    <link rel="stylesheet"  href="{{ asset('bootstrap/css/style.css')}}" />
+    <link rel="stylesheet"  href="{{ asset('bootstrap/css/myCss.css')}}" />
+{% block stylesheets %}{% endblock %}
+<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+    {% block body %}
+
+    {% endblock %}
+
+    <script src="{{ asset('bootstrap/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/me.js') }}"></script>
+    <script src="{{ asset('fosjsrouting/js/router.js') }}"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+// Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCivjrQFNOfG34OastuCXJ48r30oj-Me7s",
+            authDomain: "qcmapp-4d7b3.firebaseapp.com",
+            databaseURL: "https://qcmapp-4d7b3.firebaseio.com",
+            projectId: "qcmapp-4d7b3",
+            storageBucket: "qcmapp-4d7b3.appspot.com",
+            messagingSenderId: "337461332108"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '130561684208371',
+                autoLogAppEvents: true,
+                cookie: true,
+                status: true,
+                xfbml: true,
+                version: 'v2.9'
+            });
+             
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    console.log("qsdf");
+                    console.log(response.status);
+                    // the user is logged in and has authenticated your
+                    // app, and response.authResponse supplies
+                    // the user's ID, a valid access token, a signed
+                    // request, and the time the access token 
+                    // and signed request each expire
+                    var uid = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                } else if (response.status === 'not_authorized') {
+                    console.log(response.status);
+                   
+
+                } else {
+
+                }
+            });
+
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/fr_FR/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+{% block javascripts %}{% endblock %}
+
+</body>
+</html>

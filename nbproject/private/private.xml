@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/QCMV2/web/bootstrap/js/me.js</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/serializer/FOSUserBundle/Entity.ReponseExacte.yml</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/serializer/FOSUserBundle/Entity.Reponse.yml</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/Resources/views/Default/index.html.twig</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/Resources/views/base.html.twig</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/Resources/views/include.html.twig</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/Entity/CategoriesRepository.php</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/AppKernel.php</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/DQL/MD5Function.php</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/Resources/FOSUserBundle/views/Security/login.html.twig</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/Entity/ReponseExacte.php</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/app/serializer/FOSUserBundle/Entity.Utilisateurs.yml</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/vendor/friendsofsymfony/user-bundle/Resources/views/Security/login.html.twig</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/Entity/ReponseRepository.php</file>
+            <file>file:/C:/xampp/htdocs/QCMV2/src/Qcm/QcmBundle/Entity/QuestionRepository.php</file>
+        </group>
+    </open-files>
+</project-private>

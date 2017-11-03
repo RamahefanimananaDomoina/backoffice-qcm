@@ -1,0 +1,25 @@
+dex:
+    resource: "@DexBundle/Resources/config/routing.yml"
+    prefix:   /
+
+utilisateurs:
+    resource: "@UtilisateursBundle/Resources/config/routing.yml"
+    prefix:   /
+
+qcm:
+    resource: "@QcmBundle/Resources/config/routing.yml"
+    prefix:   /
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+#REST 
+rest : 
+  type : rest 
+  resource : "@QcmBundle/Resources/config/routing_rest.yml"
+  prefix : /api
+
+
+
+
+

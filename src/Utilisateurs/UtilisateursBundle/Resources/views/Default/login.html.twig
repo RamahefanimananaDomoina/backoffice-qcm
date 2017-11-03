@@ -1,0 +1,49 @@
+{% extends "::baseLogin.html.twig" %}
+
+
+
+{% block body %}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 form-box">
+            <div class="form-top">
+                <div class="form-top-left">
+                    <h3>Connectez vous</h3>
+
+                </div>
+                <div class="form-top-right">
+
+                </div>
+            </div>
+            <div class="form-bottom">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+                <form role="form" action="{{ path("fos_user_security_check") }}" role="form" action="" method="post" class="login-form">
+                    <!--input type="hidden" name="_csrf_token" value="{##{csrf_token('authenticate')}#}" /-->
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input type="text" class="form-control" placeholder="Identifiant.." id="username" name="_username" value="{{ last_username }}" required="required" autofocus>
+                    </div>
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i  class="fa fa-lock"></i></span>
+                        <input onFocus="highlightActive(this);
+                                activeinput = this" type="password" class="form-control" placeholder="Mot de passe..." id="password" name="_password" required= "required"  data-toggle="popover"  data-original-title="Pavé numérique" data-placement="right" data-container="body"><br/>
+                        
+                    </div>
+
+                    <a href="">Mot de passe oublié ?</a>
+                    <div >
+                        <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}"  class="btn btn-outline btn-primary btn-lg btn-block"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock body %}
+

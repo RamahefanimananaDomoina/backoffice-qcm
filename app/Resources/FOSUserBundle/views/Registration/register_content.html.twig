@@ -1,0 +1,79 @@
+{% trans_default_domain 'FOSUserBundle' %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Connexion:</h2>
+        <div id="collapseOne" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                <div class="span4">
+                    <h4>Pas encore inscrit</h4>
+                    <em>nous vous invitons  à remplir le formulaire ci-dessous</br>
+                    </em>
+                    </br></br>
+                    
+                </div>
+                
+                <div class="span4 offset2">
+                    <h2>Inscription</h2>
+                    <form method="POST"action="{{ path('fos_user_registration_register')}}" class="fos_user_registration_register">
+                         
+                         {{ form_start(form) }}
+                         <div class="row" style="margin-top: 5px">
+                             <div class="form-group">
+                                 {{ form_label(form.email, null, {
+						'label': 'Adresse e-mail *',
+						'label_attr': {'class': 'col-lg-4', 'style': 'color:#8A8D98!important;'}}) 
+                                 }}
+                                 <div class="col-lg-6">
+                                     {{ form_widget(form.email,{ 'attr' :{'class': 'input-sm form-control'}}) }}
+
+                                 </div>
+                             </div>
+                         </div>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="form-group">
+                                {{ form_label(form.username, null, {
+                                   'label': 'Nom d utilisateur',
+                                   'label_attr': {'class': 'col-lg-4', 'style': 'color:#8A8D98!important;'}}) 
+                                }}
+                                <div class="col-lg-6">
+                                    {{ form_widget(form.username,{ 'attr' :{'class': 'input-sm form-control'}}) }}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="form-group">
+                                {{ form_label(form.plainPassword.first, null, {
+                       'label': 'Mot de passe',
+                       'label_attr': {'class': 'col-lg-4', 'style': 'color:#8A8D98!important;'}}) 
+                                }}
+                                <div class="col-lg-6">
+                                    {{ form_widget(form.plainPassword.first,{ 'attr' :{'class': 'input-sm form-control'}}) }}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px">
+                            <div class="form-group">
+                                {{ form_label(form.plainPassword.second, null, {
+                        'label': 'Mot de passe',
+                        'label_attr': {'class': 'col-lg-4', 'style': 'color:#8A8D98!important;'}}) 
+                                }}
+                                <div class="col-lg-6">
+                                    {{ form_widget(form.plainPassword.second,{ 'attr' :{'class': 'input-sm form-control'}}) }}
+
+                                </div>
+                            </div>
+                        </div>
+                         
+                        <br/>
+                        {{ form_widget(form) }}
+                        <input class="btn btn-success" type="submit" value="{{ 'registration.submit'|trans }}" />
+                        {{ form_end(form) }}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

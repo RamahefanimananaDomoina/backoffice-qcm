@@ -1,0 +1,30 @@
+reponse:
+    path:     /
+    defaults: { _controller: "QcmBundle:Reponse:index" }
+
+reponse_show:
+    path:     /{id}/show
+    defaults: { _controller: "QcmBundle:Reponse:show" }
+
+reponse_new:
+    path:     /new
+    defaults: { _controller: "QcmBundle:Reponse:new" }
+
+reponse_create:
+    path:     /create
+    defaults: { _controller: "QcmBundle:Reponse:create" }
+    requirements: { _method: post }
+
+reponse_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "QcmBundle:Reponse:edit" }
+
+reponse_update:
+    path:     /{id}/update
+    defaults: { _controller: "QcmBundle:Reponse:update" }
+    requirements: { _method: post|put }
+
+reponse_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "QcmBundle:Reponse:delete" }
+    requirements: { _method: post|delete }

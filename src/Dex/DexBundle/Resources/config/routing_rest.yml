@@ -1,0 +1,9 @@
+users : 
+  type: rest
+  resource:     "DexBundle:UtilisateursRest"
+  name_prefix:  api_
+
+#get_api_question :
+#    type: rest
+#    resource:   "@QcmBundle:Default"
+#    name_prefix: api_question_

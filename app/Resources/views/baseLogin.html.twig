@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        {% block head %}{% endblock head%}  
+        <title>{% block title %} QCM | Connection{% endblock %}</title>
+        
+        <link rel="stylesheet"  href="{{ asset('dist/css/menu.css')}}" />
+        <link rel="stylesheet"  href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css')}}" />
+        <link rel="stylesheet"  href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css')}}" />
+        <link rel="stylesheet"  href="{{ asset('bower_components/metisMenu/dist/metisMenu.min.css')}}" />
+        <link rel="stylesheet"  href="{{ asset('dist/css/sb-admin-2.css')}}" />
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}
+            
+        {% endblock %}
+        
+        <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+    <script>
+// Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCivjrQFNOfG34OastuCXJ48r30oj-Me7s",
+            authDomain: "qcmapp-4d7b3.firebaseapp.com",
+            databaseURL: "https://qcmapp-4d7b3.firebaseio.com",
+            projectId: "qcmapp-4d7b3",
+            storageBucket: "qcmapp-4d7b3.appspot.com",
+            messagingSenderId: "337461332108"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '130561684208371',
+                autoLogAppEvents: true,
+                cookie: true,
+                status: true,
+                xfbml: true,
+                version: 'v2.9'
+            });
+             
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    console.log("qsdf");
+                    console.log(response.status);
+                    var uid = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                } else if (response.status === 'not_authorized') {
+                    console.log(response.status);
+                   
+
+                } else {
+
+                }
+            });
+
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//connect.facebook.net/fr_FR/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+        </script>
+        <script src="{{ asset('bootstrap/js/main.js') }}"></script>
+        <script>
+           var click_category = '';
+            $(document).ready(function() {
+                const refCat = firebase.database().ref('category');
+                refCat.on('value', function (data) {
+                    const resp = data.val();
+                    var cats = [];
+                    var i = 0;
+                    for(var prop in resp){
+                        cats[i] = resp[prop].name;
+                        i++;
+                        
+                    }
+                    var result = cats.toString();
+                    var categories = result.split(',');
+                    console.log('voila : ' +  categories);                    
+                     $("#container2").html(generateOptions(categories));
+                     $("#list_categorie").html(generateUl(categories));
+                });
+                var max_fields      = 5;
+                var wrapper         = $("#container1");
+                var wrapper1         = $("#container2");
+                var add_button      = $("#add_form_field_reponse");
+                var add_category    = $("#add_form_field_category");
+                var button_save     = document.getElementById("save");
+                var x = 1;
+                
+                
+                $(add_category).click(function(e){
+                      e.preventDefault();
+                      if(x < max_fields){
+                        x++;
+                        $(wrapper1).append('<div class="padding"><input class="form-control" id="category" type="text"><a href="#" id="enregistrer" class="btn btn-primary btn-sm">ajouter</a></div>'); //add input box
+                      }
+                });
+                $(add_button).click(function(e){
+                    e.preventDefault();
+                    if(x < max_fields){
+                        x++;
+                        console.log('valeur de x ' + x);
+                        $(wrapper).append('<div><input class="form-control " id="reponse'+x+'" type="text"><label> <input type="checkbox" id="isTrue'+x+'"> isTrue</label> <a href="#" id="delete" class="btn btn-danger btn-sm">Supprimer</a></div>'); 
+                    }
+                  else
+                  {
+                  alert('5 est la limite')
+                  }
+                });
+               
+                $(wrapper).on("click","#delete", function(e){
+                    e.preventDefault(); $(this).parent('div').remove(); x--;
+                })
+                $(wrapper1).on("click","#enregistrer", function(e){
+                    var category= document.getElementById('category').value;
+                    var refCat = firebase.database().ref('category');
+                    refCat.push({
+                        countUser : 0,
+                        name : category,
+                        statistique : 0
+                    });
+                     e.preventDefault(); $(this).parent('div').remove(); x--;
+                    console.log('ajout category avec succès');
+
+
+                });
+                function insertAnswer(){
+                    console.log('fonction insertAnswer ' + x);
+                    var tabReponse = [];
+                    for(var i = 1 ; i<= x; i++){
+                         console.log("e f fjf jke fjuccesful" + x);
+                        tabReponse.push({
+                            question : document.getElementById('reponse' + i).value,
+                            isTrue : document.getElementById('isTrue' + i).checked
+                        });                        
+                        
+                    }
+                    
+                };
+                function addQuestion(catId, value) {
+                    var refQuestion= firebase.database().ref('question');
+                    var question = {};
+
+                    question.categoryId=catId;
+                    question.value=value;
+
+                    refQuestion.push(question);
+                };
+                getContent('DOTNET');
+                button_save.onclick = function(){
+                    var choice_category = document.getElementById("categori").value;
+                    var question = document.getElementById('question').value;
+                    getCategoryId(choice_category).then(function(id) {
+                        addQuestion(id, question);
+                        getQuestionId(question).then(function(id) {
+                            console.log("id question " + id);
+                            var tabReponse = [];
+                            for(var i = 1 ; i<= x; i++){
+                                tabReponse.push({
+                                    question : document.getElementById('reponse' + i).value,
+                                    isTrue : document.getElementById('isTrue' + i).checked
+                                });                        
+                                
+                            }
+                            var refRep= firebase.database().ref('reponse');
+                            for(var k = 0; k < tabReponse.length; k++){
+                                refRep.push({
+                                   questId :  id,
+                                   value :  tabReponse[k].question,
+                                   isTrue : tabReponse[k].isTrue
+                                });
+                            } 
+                            for(var k = 1 ; k<= x; k++){
+                                document.getElementById('reponse' + k).value ='';
+                                document.getElementById('isTrue' + k).checked = false;
+                            }
+                            document.getElementById('question').value ='';
+                            $('#notification').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>enregistrement a été effectué avec <a href="#" class="alert-link">succès</a>.</div>')                            
+                        });
+                     });
+
+                    if(click_category){
+                        getContent(click_category);
+                    }else{
+                        getContent('DOTNET');
+                    } 
+                    console.log('itoo ' + checkCat);
+                    console.log("save succesful" + x);
+                }
+                
+            });   
+            
+
+             var allQuestion = [];
+             var allReponse = [];
+            function getReponsesByQuestionId(questId) {
+              return new Promise(function (resolve, reject) {
+
+                var refRep = firebase.database().ref('reponse');
+                var ret = {};
+                refRep.orderByChild('questId').equalTo(questId).on('value', function (resp) {
+                  var data = resp.val();
+
+                  if (!data) {
+                    reject({});
+                    return;
+                  }
+
+                  var keys = Object.keys(data);
+                  var reponses = keys.reduce(function (acc, key) {
+                    acc.push({
+                      idReponse : data[key],
+                      valeur: data[key].value,
+                      isTrue: data[key].isTrue
+                    });
+                    return acc;
+                  }, []);
+
+                  ret[questId] = reponses;
+                  resolve(ret);
+                });
+                
+              });
+
+            };
+            function getReponsesByQuestionIds(questionList){
+                console.log('zefef + ' + questionList);
+                return Promise.all(questionList.map(function(question){
+                    return getReponsesByQuestionId(question.id)
+                }));
+            };        
+            
+            function getValueOfItem(indice){
+                var content_category = document.getElementById('category_value'+indice);
+                checkCat = content_category.text;
+                click_category = content_category.text;
+                console.log(click_category);
+                getContent(click_category);
+            }
+            function getContent(category){
+                var mydata2 = {};
+                getCategoryId(category).then(function(id) {
+                    getQuestionByCategory(id).then(function(value){
+                        if (value.length) {
+                            console.log(getReponsesByQuestionIds(value));
+                            getReponsesByQuestionIds(value).then(function (responseList){
+                                
+                                var reponse = responseList;
+                                console.log(reponse);
+                                var resp = reponse.reduce(function (acc, rep) {                        
+                                    var key = Object.keys(rep)[0];
+                                    const arr = rep[key];
+                                    acc[key] = arr;
+                                    return acc;
+                                }, {});
+                                
+                                mydata2.questions = [];
+                                console.log(resp);
+                                value.map(function(question) {
+                                    const dataQuestion = {};
+                                    console.log(question);
+                                    dataQuestion.value = question.value;
+                                    dataQuestion.responses = resp[question.id];
+                                    mydata2.questions.push(dataQuestion);
+                                });                                
+                                $("#dom_accordion").html(generateAccordion(mydata2.questions));
+                            }).catch(e => {
+                                console.log(e);
+                            });                                                
+                            console.log(mydata2);
+                        }
+                    });
+                });  
+            }
+                         
+             var question = document.getElementById('question').value; 
+
+        function getQuestionId(question){
+            var refQuestion = firebase.database().ref('question');
+            return new Promise(function(resolve, reject){
+               refQuestion.orderByChild('value').equalTo(question).on('value', function(data){
+                   var ret;
+                   for(var prop in data.val()){
+                       ret = prop;
+                   }
+                   return resolve(ret);
+               });
+            });
+        }
+        function getCategoryId(name) {
+            var refCat = firebase.database().ref('category');
+
+            return new Promise(function(resolve, reject) {
+                refCat.orderByChild('name').equalTo(name).on('value', function (data) {
+                    var ret;
+                    for (var prop in data.val()) {
+                         ret = prop;
+                    }
+                    resolve(ret);
+                });
+            });
+        }
+        function getQuestionIds(questId) {
+            var refQuestion= firebase.database().ref('question');
+
+            return new Promise(function(resolve, reject) {
+                refQuestion.orderByChild('categoryId').equalTo(questId).on('value', function (data) {
+                    var ret = data.val();
+                    var keys =[];
+
+                    for (var key in data.val()) {
+                         keys.push(key);
+                    }
+                    resolve(keys);
+                });
+            });
+        }
+        function generateOptions(array){
+            var result = "<select class='form-control' id='categori'>";
+            for(var j=0; j<array.length; j++){
+                result += "<option>"+ array[j] + "</option>";
+            }
+             
+            return result + "</select>";
+        }
+
+        function generateUl(array){
+            var content = "<ul class='nav nav-pills nav-stacked'  id='list'>";
+            for(var j=0; j<array.length; j++){
+                content += " <li ><a class='list-group-item' id='category_value"+j+"' onclick='getValueOfItem("+j+")'>"+ array[j] + "</a></li>";
+                
+
+            }
+
+            
+            return content + "</ul>";
+        }
+        function defer() {
+            var deferred = {};
+            var promise = new Promise(function(resolve, reject) {
+                deferred.resolve = resolve;
+                deferred.reject  = reject;
+            });
+            deferred.promise = promise;
+            return deferred;
+        }
+
+
+        function getReponseId(reponses) {
+                   
+            var refQuestion = firebase.database().ref('reponse');
+            var deferred = defer();
+               refQuestion.orderByChild('value').equalTo(reponses).on('value', function(data){
+                   var ret = [];
+                   for(var prop in data.val()){
+                       ret = prop;
+                   }
+                   deferred.resolve(ret);
+               });
+            return deferred.promise;
+        }
+        function getQuestId(questions){
+             var refQuestion = firebase.database().ref('question');
+             var deferred = defer();
+             refQuestion.orderByChild('value').equalTo(questions).on('value', function(data){
+                var ret = [];
+                   for(var prop in data.val()){
+                       ret = prop;
+                   }
+                   deferred.resolve(ret);
+             });
+             return deferred.promise;
+        } 
+        var fun = function(value){
+            var variable = getReponseId(value).then(function(data){
+                console.log(data);
+                vaviable = data;
+                return new Promise(function(resolve, reject){
+                    console.log("test", vaviable);
+                    resolve(vaviable);
+                });
+            });
+            return variable;
+        }
+        var idQuestion = function(value){
+            var variable = getQuestId(value).then(function(data){
+                vaviable = data;
+                return new Promise(function(resolve, reject){
+                    console.log("test", vaviable);
+                    resolve(vaviable);
+                });
+            });
+            return variable;
+        }
+        function getIdQuestion(indice){
+            var enteteQuestion = document.getElementsByClassName('questionId'+indice);
+            var questionId = indice[0].id;
+            console.log('idQuestion ',questionId);
+            var button_delete_question = document.getElementById('delete_question');
+            button_delete_question.onclick = function(){
+                 var refQuestDelete = firebase.database().ref().child("question").child(questionId);
+                 refQuestDelete.once('value', function(snapshot){
+                    console.log('snapshot == ', snapshot.val());
+                     if (snapshot.val() === null) {
+                        alert("does not exist");
+                    }else{
+                        refQuestDelete.remove();
+                        console.log("suppression avec succes");
+                        if(click_category){
+                            getContent(click_category);
+                        }else{
+                            getContent('DOTNET');
+                        } 
+                        $('#notificationQuestion').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>La suppression de question a été effectué avec <a href="#" class="alert-link">succès</a>.</div>') 
+                    }
+                 });
+            }
+
+            var refQuet = firebase.database().ref().child("question").child(questionId);
+            var getQuest = '';
+            refQuet.once('value', function(snapshot){
+              getQuest = snapshot.val().value;
+             
+            });
+            var edit_reponse = document.getElementById("input_edit_question").value = getQuest;
+            var button_edit_question = document.getElementById("button_edit_question");
+            button_edit_question.onclick = function(){
+                var content_edit_question=$("#myModalEditerQuestion").find('input[id="input_edit_question"]').val();
+                console.log('ito',content_edit_question);
+                var refRep = firebase.database().ref('reponse/' + questionId);
+                refRep.update({
+                    value : content_edit_question
+                });
+                if(click_category){
+                    getContent(click_category);
+                }else{
+                    getContent('DOTNET');
+                }                    
+               
+                console.log('vita');
+                $('#notificationQuestion').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>La modification a été effectué avec <a href="#" class="alert-link">succès</a>.</div>') 
+            }
+            document.getElementById("question_title").innerHTML = getQuest;
+            var button_add_answer_byQuestion = document.getElementById('button_add_answer_byQuestion');
+            button_add_answer_byQuestion.onclick = function(){
+                var content_add_answer_byQuestion=$("#myModalAjouterReponseByQuestion").find('input[id="input_add_answer_byQuestion"]').val();
+                console.log('ito',content_add_answer_byQuestion);
+                var isTrue = false;
+                var refRep = firebase.database().ref('reponse');
+                var reponse = {
+                    isTrue : isTrue,
+                    questId : questionId,
+                    value : content_add_answer_byQuestion
+                };
+                refRep.push(reponse);
+                if(click_category){
+                    getContent(click_category);
+                }else{
+                    getContent('DOTNET');
+                }                    
+               
+                console.log('vita');
+                $('#notificationQuestion').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>L enregistrement de réponse a été effectué avec <a href="#" class="alert-link">succès</a>.</div>') 
+            }
+        }
+        function getId(indice){
+            var dom = document.getElementsByClassName('dom'+indice);
+            console.log(indice[0].id);
+            var id = indice[0].id;
+            console.log('idReponse ',id);
+            var refRep = firebase.database().ref().child("reponse").child(id);
+            var getRep = '';
+            refRep.once('value', function(snapshot){
+              getRep = snapshot.val().value;
+             
+            });
+            var edit_reponse = document.getElementById("input_edit_answer").value = getRep;
+            var button_edit_answer = document.getElementById("button_edit_answer");
+            button_edit_answer.onclick = function(){
+                var content_edit_annswer=$("#myModal").find('input[id="input_edit_answer"]').val();
+                console.log('ito',content_edit_annswer);
+                var refRep = firebase.database().ref('reponse/' + id);
+                refRep.update({
+                    value : content_edit_annswer
+                });
+                if(click_category){
+                    getContent(click_category);
+                }else{
+                    getContent('DOTNET');
+                }  
+                console.log('vita');
+                $('#notificationQuestion').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>La modification a été effectué avec <a href="#" class="alert-link">succès</a>.</div>') 
+            }
+            
+            
+
+            var button_delete_answer = document.getElementById("delete_answer");
+            button_delete_answer.onclick = function(){
+                var refRepDelete = firebase.database().ref().child("reponse").child(id);
+                refRepDelete.once('value', function(snapshot){
+                    console.log('snapshot == ', snapshot);
+                    if (snapshot.val() === null) {
+                        alert("does not exist");
+                    }else{
+                        refRepDelete.remove();
+                        console.log("suppression avec succes");
+                        getContent(click_category);
+                        $('#notificationQuestion').append('<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>La suppression de réponse a été effectué avec <a href="#" class="alert-link">succès</a>.</div>') 
+                    }
+                });
+            }            
+        }  
+        function generateAnswer(array){
+            
+            var result = "<ul style='list-style: disc padding-left: 40px'>";
+            var radom = Math.floor((Math.random() * 10) + 1);
+            for(var j=0; j<array.length; j++){
+                var x = fun(array[j].valeur);
+                var x2;
+                x.then(function(data){
+                    x2 = data;
+                    console.log(x2);
+                    document.getElementById('initial').setAttribute('id', x2);
+                });
+                
+                result += "<div class='dom"+j+"' id='initial' onclick='getId($(this))'><li id='li_reponse'>"+ array[j].valeur +" &nbsp;<a style='color: red'><span  style='float:right' class='glyphicon glyphicon-remove-circle' data-toggle='modal' data-target='#modalSupprimer'></span></a>&nbsp;&nbsp;<a  style='color: green'><span id='myspan' class='glyphicon glyphicon-edit' style='float:right' data-toggle='modal' data-target='#myModal'></span></a></li></div>";
+            }
+            
+            return result + "</ul>";
+        }
+        function generateKeyQuestion(value){
+            var x = idQuestion(value);
+            console.log(x);
+            var x2;
+            x.then(function(data){
+                x2 = data;
+                console.log(x2);
+                document.getElementById('initialize').setAttribute('id', x2);
+               
+            });
+            return x;
+        }
+       
+        function generateAccordion(array){
+            var content = " ";
+            var reponse_content = "";
+            for(var j=0; j<array.length; j++){
+                generateKeyQuestion(array[j].value);
+                content += "<div class='panel-group' id='accordion"+j+" '  ><div class='panel panel-default'><div class='panel-heading' id='initialize' onclick='getIdQuestion($(this))'><h4 class='panel-title'><a data-toggle='collapse' class='name' data-parent='#accordion"+j+"' href='#collapseOne"+j+"'><span class='glyphicon glyphicon-plus'></span> "+ array[j].value + "</a><a style='color: red'><span class='glyphicon glyphicon-remove-circle questionId"+j+"' style='float:right' data-toggle='modal' data-target='#modalSupprimerQuestion' ></span></a><a>&nbsp;&nbsp;</a><a  style='color: green'><span id='myspan' class='glyphicon glyphicon-edit'  style='float:right' data-toggle='modal' data-target='#myModalEditerQuestion' ></span></a></div> <div id='collapseOne"+j+"' class='panel-collapse collapse'> <div class='panel-body'> <span style='color: blue' class='glyphicon glyphicon-plus' data-toggle='modal' data-target='#myModalAjouterReponseByQuestion'></span> &nbsp;Réponse : <strong>"+ generateAnswer(array[j].responses) + "</strong></p> </div></div></div></div>";
+            }
+            //document.getElementById('input_edit_answer').value = '';
+            return content;
+        }
+        function getQuestionByCategory(categoryId){
+            var refQuestion = firebase.database().ref('question');
+            const questionList = [];
+            return new Promise(function(resolve, reject) {
+                refQuestion.orderByChild('categoryId').equalTo(categoryId).on('value', function (resp) {
+            const data = resp.val();
+
+            for (const prop in data) {
+              questionList.push({
+                id: prop,
+                value: data[prop].value
+              });
+            }
+            resolve(questionList);
+            });                
+          });              
+        }
+        
+        </script>
+        <script type="text/javascript">
+              $(document).ready(function(){
+        // Add minus icon for collapse element which is open by default
+                $(".collapse.in").each(function(){
+                    $(this).siblings(".panel-heading").find(".glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus");
+                });
+                
+                // Toggle plus minus icon on show hide of collapse element
+                $(".collapse").on('show.bs.collapse', function(){
+                    $(this).parent().find(".glyphicon").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+                }).on('hide.bs.collapse', function(){
+                    $(this).parent().find(".glyphicon").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+                });
+            });
+        </script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

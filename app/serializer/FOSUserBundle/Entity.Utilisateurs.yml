@@ -1,0 +1,33 @@
+Dex\DexsBundle\Entity\Utilisateurs:
+    exclusion_policy: ALL
+    properties :
+        id:
+            expose : true
+        username:
+            expose : true
+        usernameCanonical:
+            expose : true 
+        email:
+            expose : true
+        emailCanonical:
+            expose : true
+        salt:
+            expose : true 
+        password:
+            expose : true
+        plainPassword:
+            expose : true
+        lastLogin:
+            expose : true
+        confirmationToken:
+            expose : true
+        passwordRequestedAt:
+            expose : true
+        groups:
+            expose : true
+        locked:
+            expose : true
+        roles:
+            expose : true
+        expiresAt:
+            expose : true

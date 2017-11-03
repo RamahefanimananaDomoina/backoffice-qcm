@@ -1,0 +1,30 @@
+reponseexacte:
+    path:     /
+    defaults: { _controller: "QcmBundle:ReponseExacte:index" }
+
+reponseexacte_show:
+    path:     /{id}/show
+    defaults: { _controller: "QcmBundle:ReponseExacte:show" }
+
+reponseexacte_new:
+    path:     /new
+    defaults: { _controller: "QcmBundle:ReponseExacte:new" }
+
+reponseexacte_create:
+    path:     /create
+    defaults: { _controller: "QcmBundle:ReponseExacte:create" }
+    requirements: { _method: post }
+
+reponseexacte_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "QcmBundle:ReponseExacte:edit" }
+
+reponseexacte_update:
+    path:     /{id}/update
+    defaults: { _controller: "QcmBundle:ReponseExacte:update" }
+    requirements: { _method: post|put }
+
+reponseexacte_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "QcmBundle:ReponseExacte:delete" }
+    requirements: { _method: post|delete }

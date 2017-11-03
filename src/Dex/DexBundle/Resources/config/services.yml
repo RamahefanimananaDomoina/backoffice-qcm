@@ -1,0 +1,7 @@
+parameters:
+#    dex.example.class: Dex\DexBundle\Example
+
+services:
+#    dex.example:
+#        class: %dex.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
